@@ -14,7 +14,7 @@ export class ProductsAppStack extends cdk.Stack {
       "ProductsFetchHandler",
       {
         functionName: "ProductsFetchHandler",
-        entry: "lambda/products/fetchHandler.ts",
+        entry: "lambda/products/productsFetchHandler.ts",
         handler: "handler",
         runtime: lambda.Runtime.NODEJS_20_X,
         memorySize: 512,
