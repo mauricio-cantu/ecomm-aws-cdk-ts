@@ -17,7 +17,7 @@ export async function handler(
     lambdaRequestId,
   });
 
-  if (event.resource === "products") {
+  if (event.resource === "/products") {
     if (method === "GET") {
       console.log("ProductsFetchHandler - GET");
 
