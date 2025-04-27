@@ -19,13 +19,13 @@ export async function handler(
 
   // "/products"
   if (event.resource === "/products") {
-    if (method === "GET") {
-      console.log("ProductsFetchHandler - /products");
+    if (method === "POST") {
+      console.log("ProductsAdminHandler - POST /products");
 
       return {
-        statusCode: 200,
+        statusCode: 201,
         body: JSON.stringify({
-          message: "ProductsFetchHandler - /products",
+          message: "ProductsAdminHandler - POST /products",
         }),
       };
     }
@@ -33,15 +33,28 @@ export async function handler(
 
   // "/products/{id}"
   if (event.resource === "/products/{id}") {
-    if (method === "GET") {
+    if (method === "PUT") {
       const id = event.pathParameters!.id as string;
 
-      console.log(`ProductsFetchHandler - /products/${id}`);
+      console.log(`ProductsAdminHandler - PUT /products/${id}`);
 
       return {
         statusCode: 200,
         body: JSON.stringify({
-          message: `ProductsFetchHandler - /products/${id}`,
+          message: `ProductsAdminHandler - PUT /products/${id}`,
+        }),
+      };
+    }
+
+    if (method === "DELETE") {
+      const id = event.pathParameters!.id as string;
+
+      console.log(`ProductsAdminHandler - DELETE /products/${id}`);
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          message: `ProductsAdminHandler - DELETE /products/${id}`,
         }),
       };
     }
