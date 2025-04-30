@@ -4,6 +4,13 @@ import {
   Context,
 } from "aws-lambda";
 
+import { ProductRepository } from "/opt/nodejs/productsLayer";
+import { DynamoDB } from "aws-sdk";
+
+const productsDdb = process.env.PRODUCTS_DDB!;
+const ddbClient = new DynamoDB.DocumentClient();
+const productRepository = new ProductRepository(ddbClient, productsDdb);
+
 export async function handler(
   event: APIGatewayProxyEvent,
   ctx: Context
@@ -22,11 +29,11 @@ export async function handler(
     if (method === "GET") {
       console.log("ProductsFetchHandler - /products");
 
+      const products = await productRepository.getAll();
+
       return {
         statusCode: 200,
-        body: JSON.stringify({
-          message: "ProductsFetchHandler - /products",
-        }),
+        body: JSON.stringify(products),
       };
     }
   }
@@ -38,12 +45,20 @@ export async function handler(
 
       console.log(`ProductsFetchHandler - /products/${id}`);
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          message: `ProductsFetchHandler - /products/${id}`,
-        }),
-      };
+      try {
+        const product = await productRepository.getById(id);
+
+        return {
+          statusCode: 200,
+          body: JSON.stringify(product),
+        };
+      } catch (error) {
+        console.error((<Error>error).message);
+        return {
+          statusCode: 404,
+          body: (<Error>error).message,
+        };
+      }
     }
   }
 
