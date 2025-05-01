@@ -8,6 +8,8 @@ export interface Product {
   code: string;
   price: number;
   model: string;
+  // 'url' is a reserved keyword
+  productUrl: string;
 }
 
 export class ProductRepository {
@@ -72,12 +74,13 @@ export class ProductRepository {
         ConditionExpression: "attribute_exists(id)",
         ReturnValues: "UPDATED_NEW",
         UpdateExpression:
-          "set productName = :n, code = :c, price = :p, model = :m",
+          "set productName = :n, code = :c, price = :p, model = :m, productUrl = :u",
         ExpressionAttributeValues: {
           ":n": product.productName,
           ":c": product.code,
           ":p": product.price,
           ":m": product.model,
+          ":u": product.productUrl,
         },
       })
       .promise();
